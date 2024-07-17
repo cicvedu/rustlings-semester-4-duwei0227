@@ -2,13 +2,12 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
 use std::vec::*;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 struct Node<T> {
     val: T,
     next: Option<NonNull<Node<T>>>,
@@ -22,20 +21,20 @@ impl<T> Node<T> {
         }
     }
 }
-#[derive(Debug)]
+#[derive(Debug, PartialEq, PartialOrd)]
 struct LinkedList<T> {
     length: u32,
     start: Option<NonNull<Node<T>>>,
     end: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Default for LinkedList<T> {
+impl<T:Ord> Default for LinkedList<T> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> LinkedList<T> {
+impl<T:Ord> LinkedList<T> {
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -69,14 +68,30 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
+	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> LinkedList<T>
 	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+	
+
+        let mut list_merge = LinkedList::<T>::new();
+
+
+        let mut merge_d: Vec<T> = Vec::with_capacity((list_a.length + list_b.length) as usize);
+
+        for a in list_a.into() {
+            merge_d.push(a);
         }
+
+        for b in list_b.into() {
+            merge_d.push(b);
+        }
+
+        merge_d.sort();
+        
+		for i in 0..merge_d.len(){
+			list_merge.add(merge_d[i]);
+		}
+        
+        list_merge
 	}
 }
 
