@@ -32,7 +32,7 @@ fn main() {
     let mut joinhandles = Vec::new();
 
     for offset in 0..8u32 {
-        let child_numbers: Vec<u32> = numbers.into_iter().filter(|n| *n % 8 == offset).collect::<u32>();
+        let child_numbers: Vec<u32> = numbers.iter().filter(|&&n| n % 8 == offset).cloned().collect();
         let shared_numbers = shared_numbers.clone();
         joinhandles.push(thread::spawn(move || {
             let sum: u32 = child_numbers.into_iter().sum();
